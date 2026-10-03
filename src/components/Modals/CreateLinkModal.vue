@@ -68,7 +68,7 @@ const getCategories = async () => {
     listCategories.value = data
     formInputs.value.category = listCategories.value[0]
   } catch {
-    showToast('error', 'Ошибка', 'Не удалось получить категории')
+    showToast('information', 'Ошибка', 'Не удалось получить категории')
   }
 }
 
@@ -77,20 +77,27 @@ const getDomain = (url) => {
   try {
     const { hostname } = new URL(url)
     const parts = hostname.split('.')
+    if (parts[1] === 'elibrary' || parts[1] === 'unn') {
     if (parts.length > 2) {
       domainname = parts.slice(-2).join('.')
     }
     domainname = hostname
+  } else {
+    throw new Error();
+  }
   } catch (e) {
     isLoadingButton.value = false
-    showToast('error', 'Ошибка', 'Не удалось добавить ссылку')
   }
   return domainname
 }
 
 const addNewLink = async () => {
   isLoadingButton.value = true
+  try {
   const hostname = getDomain(formInputs.value.url)
+  if (!hostname) {
+    throw new Error();
+  }
   const payload = {
     name: formInputs.value.name,
     url: formInputs.value.url,
@@ -101,15 +108,13 @@ const addNewLink = async () => {
     preview_image: `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${hostname}&size=32`,
     user_id: userStore.user.id,
   }
-
-  try {
     const { error } = await supabase.from('links').insert(payload).select()
     if (error) throw error
     modelValue.value = false
     clear()
     showToast('success', 'Успех', 'Ссылка добавлена')
   } catch {
-    showToast('error', 'Ошибка', 'Не удалось добавить ссылку')
+    showToast('information', 'Ошибка', 'Не удалось добавить ссылку')
   } finally {
     isLoadingButton.value = false
   }
@@ -119,6 +124,10 @@ const updateLink = async () => {
   isLoadingButton.value = true
 
   try {
+    const hostname = getDomain(formInputs.value.url)
+    if (!hostname) {
+      throw new Error();
+    }
     const payload = {
       name: formInputs.value.name,
       url: formInputs.value.url,
@@ -133,7 +142,7 @@ const updateLink = async () => {
     clear()
     showToast('success', 'Успех', 'Ссылка изменена')
   } catch {
-    showToast('error', 'При изменении ссылка произошла ошибка')
+    showToast('information', 'При изменении ссылка произошла ошибка')
   } finally {
     isLoadingButton.value = false
   }
@@ -168,7 +177,7 @@ const getLink = async () => {
     formInputs.value.isFavorite = data[0].is_favorite
     formInputs.value.category = listCategories.value.find((item) => item.id === data[0].category)
   } catch {
-    showToast('error', 'Ошибка при получении данных')
+    showToast('information', 'Ошибка при получении данных')
   }
 }
 
@@ -207,10 +216,11 @@ watch(modelValue, async (newValue) => {
               name="name"
               v-model="formInputs.name"
               class="w-full"
+              :class="{ 'incorrect_input': $form.name?.invalid }"
               autocomplete="off"
               placeholder="Название ссылки"
             />
-            <Message v-if="$form.name?.invalid" severity="error" variant="simple" size="small">
+            <Message v-if="$form.name?.invalid" severity="error" variant="simple" size="small" class="auth-validation-message">
               {{ $form.name.error.message }}
             </Message>
           </div>
@@ -219,10 +229,11 @@ watch(modelValue, async (newValue) => {
               name="url"
               v-model="formInputs.url"
               class="w-full"
+              :class="{ 'incorrect_input': $form.url?.invalid }"
               autocomplete="off"
               placeholder="Ссылка"
             />
-            <Message v-if="$form.url?.invalid" severity="error" variant="simple" size="small">
+            <Message v-if="$form.url?.invalid" severity="error" variant="simple" size="small" class="auth-validation-message">
               {{ $form.url.error.message }}
             </Message>
           </div>

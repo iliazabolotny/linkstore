@@ -20,18 +20,22 @@ const saveCategory = async () => {
   isLoading.value = true
 
   try {
+    if (categoryName.value=='Электродинамика' || categoryName.value=='Статистическая радиофизика и мобильные системы связи') {
     const { data, error } = await supabase
       .from('categories')
       .insert({ name: categoryName.value })
       .select()
-
     if (error) throw error
     listCategories.value.push(data[0])
     categoryName.value = ''
 
-    showToast('success', 'Успех', 'Категория добавлена')
+
+    showToast('success', 'Успех', 'Категория добавлена') }
+    else {
+      throw error();
+    }
   } catch {
-    showToast('error', 'Ошибка', 'Не удалось добавить категорию')
+    showToast('information', 'Ошибка', 'Не удалось добавить категорию')
   } finally {
     isLoading.value = false
   }
@@ -46,7 +50,7 @@ const getCategories = async () => {
     listCategories.value = data
     isLoadingModal.value = false
   } catch {
-    showToast('error', 'Ошибка', 'Не удалось получить категории')
+    showToast('information', 'Ошибка', 'Не удалось получить категории')
   }
 }
 

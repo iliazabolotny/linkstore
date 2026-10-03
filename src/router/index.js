@@ -3,7 +3,7 @@ import Main from '@/pages/Main.vue'
 import { supabase } from '@/supabase.js'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',

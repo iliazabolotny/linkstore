@@ -9,3 +9,16 @@ body {
   min-height: 100vh;
   @apply bg-gray-100;
 }
+
+.incorrect_input {
+  border-color: #000 !important;
+  color: #000 !important;
+}
+
+.incorrect_input::placeholder {
+  color: #000 !important;
+}
+
+.auth-validation-message {
+    color: #000 !important;
+}

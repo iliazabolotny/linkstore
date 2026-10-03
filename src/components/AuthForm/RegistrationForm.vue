@@ -62,8 +62,9 @@
         type="text"
         v-model="formData.email"
         class="w-full"
+        :class="{ 'incorrect_input': $form.email?.invalid }"
       />
-      <Message v-if="$form.email?.invalid" severity="error" variant="simple" size="small">
+      <Message v-if="$form.email?.invalid" severity="error" variant="simple" size="small"  class="auth-validation-message">
         {{ $form.email.error.message }}
       </Message>
     </div>
@@ -74,8 +75,9 @@
         type="password"
         v-model="formData.password"
         class="w-full"
+        :class="{ 'incorrect_input': $form.password?.invalid }"
       />
-      <Message v-if="$form.password?.invalid" severity="error" variant="simple" size="small">
+      <Message v-if="$form.password?.invalid" severity="error" variant="simple" size="small"  class="auth-validation-message">
         {{ $form.password.error.message }}
       </Message>
     </div>
@@ -86,8 +88,9 @@
         type="text"
         v-model="formData.firstname"
         class="w-full"
+        :class="{ 'incorrect_input': $form.firstname?.invalid }"
       />
-      <Message v-if="$form.firstname?.invalid" severity="error" variant="simple" size="small">
+      <Message v-if="$form.firstname?.invalid" severity="error" variant="simple" size="small"  class="auth-validation-message">
         {{ $form.firstname.error.message }}
       </Message>
     </div>
