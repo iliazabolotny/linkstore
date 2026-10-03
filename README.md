@@ -17,4 +17,4 @@ Start: `npm run dev`
 
 [Cert](https://stepik.org/cert/3310493)
 
-[Links Store](https://linkstore-kappa.vercel.app/)
+[LinkStore](https://linkstore-kappa.vercel.app/)
