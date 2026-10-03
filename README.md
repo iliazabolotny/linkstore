@@ -1,4 +1,4 @@
-# Links Store
+# LinkStore
 
 ## Technologies:
 
@@ -17,4 +17,4 @@ Start: `npm run dev`
 
 [Cert](https://stepik.org/cert/3310493)
 
-[Links Store](https://linksstore.vercel.app)
+[Links Store](https://linkstore-kappa.vercel.app/)
